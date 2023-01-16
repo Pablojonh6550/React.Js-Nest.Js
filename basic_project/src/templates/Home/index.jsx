@@ -1,11 +1,14 @@
 import { Component } from "react";
-import { loadPosts } from "./utils/load-posts";
-import "./App.css";
-import { Posts } from "./components/Posts";
+import { loadPosts } from "../../utils/load-posts";
+import "./styles.css";
 
-class App extends Component {
+import { Posts } from "../../components/Posts";
+import { Button } from "../../components/Button";
+
+export class Home extends Component {
   state = {
     posts: [],
+    allPosts: [],
   };
 
   async componentDidMount() {
@@ -23,9 +26,8 @@ class App extends Component {
     return (
       <section className="container">
         <Posts posts={posts} />
+        <Button />
       </section>
     );
   }
 }
-
-export default App;

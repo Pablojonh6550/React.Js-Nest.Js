@@ -9,6 +9,8 @@ export class Home extends Component {
   state = {
     posts: [],
     allPosts: [],
+    page: 0,
+    postsPerPage: 2,
   };
 
   async componentDidMount() {
@@ -16,8 +18,21 @@ export class Home extends Component {
   }
 
   loadPosts = async () => {
+    const { page, postsPerPage } = this.state;
     const postsAndPhotos = await loadPosts();
-    this.setState({ posts: postsAndPhotos });
+    this.setState({
+      posts: postsAndPhotos.slice(page, postsPerPage),
+      allPosts: postsAndPhotos,
+    });
+  };
+
+  loadMorePosts = () => {
+    const { page, postsPerPage, allPosts, posts } = this.state;
+    const nextPage = page + postsPerPage;
+    const nextPosts = allPosts.slice(nextPage, nextPage + postsPerPage);
+    posts.push(...nextPosts);
+
+    this.setState({ posts, page: nextPage });
   };
 
   render() {
@@ -26,7 +41,7 @@ export class Home extends Component {
     return (
       <section className="container">
         <Posts posts={posts} />
-        <Button />
+        <Button event={this.loadMorePosts} text="Load more posts" />
       </section>
     );
   }
